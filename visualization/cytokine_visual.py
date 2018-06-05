@@ -3,8 +3,6 @@ import sys
 import math
 script_dir = os.path.split(os.path.realpath(__file__))[0]
 
-sys.path.insert(0,os.path.join(script_dir, "../../"))
-
 root_path = os.path.dirname(script_dir)
 print(root_path)
 data_path = os.path.join(root_path, "data/")
