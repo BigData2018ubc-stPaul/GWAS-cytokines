@@ -6,7 +6,7 @@ import getopt
 def get_cytokine_paths(cytokine_dir):
     cytokine_paths = []
     for file in os.listdir(cytokine_dir):
-        if file.endswith(".assoc")
+        if file.endswith(".assoc"):
             name = file.split('.')[0]
             cytokine_paths.append((name,os.path.join(cytokine_dir,file))) 
     return cytokine_paths
@@ -18,7 +18,7 @@ def get_cytokine_snps(cytokine_paths,alpha):
         with open(path,'r') as file:
             for line in file:
                 tokens = line.split(' ')
-                if tokens[8] != "NA" and tokens[8] != "P" and float(tokens[8]) <= alpha:
+                if tokens[8] != "NA" and tokens[8] != "P" and float.valueof(tokens[8]) <= alpha:
                     snps.append(tokens[1])
         cytokine_snps[name] = snps
     return cytokine_snps
@@ -28,7 +28,7 @@ def get_survival_snps(survival_path):
     with open(survival_path,'r') as file:
         for line in file:
             tokens = line.split(' ')
-            if tokens[8] != "NA" and tokens[8] != "P" and float(tokens[8]) <= alpha:
+            if tokens[8] != "NA" and tokens[8] != "P" and float.valueof(tokens[8]) <= alpha:
                 snps.append(token[1])
     return snps
 
@@ -37,7 +37,7 @@ def intersect_snps(cytokine_snps,survival_snps):
     for cytokine in cytokine_snps:
         snps = []
         for snp in survival_snps:
-            if snp in cytokine_snps[cytokine]
+            if snp in cytokine_snps[cytokine]:
                 snps.append(snp)
         intersection[cytokine] = snps
     return intersection
