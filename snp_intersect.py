@@ -30,7 +30,7 @@ def get_survival_snps(survival_path,alpha):
         for line in file:
             tokens = line.split()
             if tokens[8] not in ["NA","P"," ","\t","\n"] and float(tokens[8]) <= alpha:
-                snps.append(token[1])
+                snps.append(tokens[1])
     assert(len(snps) > 0)
     return snps
 
