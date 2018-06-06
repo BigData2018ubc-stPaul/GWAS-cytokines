@@ -17,7 +17,7 @@ def get_cytokine_snps(cytokine_paths,alpha):
         snps = []
         with open(path,'r') as file:
             for line in file:
-                tokens = line.split(' ')
+                tokens = line.split()
                 if tokens[8] not in ["NA","P"," ","\t","\n"] and float(tokens[8]) <= alpha:
                     snps.append(tokens[1])
         assert(len(snps) > 0)
@@ -28,7 +28,7 @@ def get_survival_snps(survival_path):
     snps = []
     with open(survival_path,'r') as file:
         for line in file:
-            tokens = line.split(' ')
+            tokens = line.split()
             if tokens[8] not in ["NA","P"," ","\t","\n"] and float(tokens[8]) <= alpha:
                 snps.append(token[1])
     assert(len(snps) > 0)
@@ -86,7 +86,7 @@ def main(argv):
         elif opt == '-o':
             output = arg
         elif opt == '-a':
-            alpha = arg
+            alpha = float(arg)
 
     opts_incomplete = False
 
