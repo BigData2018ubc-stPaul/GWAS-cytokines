@@ -53,8 +53,8 @@ def output_snps(intersected_snps,output):
             file.write(cytokine + "\t" + "snps")
 
 def main(argv):
-    help_message = ""
-    usage_message = ""
+    help_message = "Finds SNPs which are both correlated with raised levels of particular cytokines, and survival."
+    usage_message = "[-h help and usage] [-s path to survival association file] [-c path to directory containing cytokine assoc files] [-a desired alpha P-value cutoff]"
     options = "hs:c:o:a:"
 
     try:
