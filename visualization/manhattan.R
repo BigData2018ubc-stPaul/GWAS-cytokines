@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 
 # this is a Rscript to generate manhattan plot
-# usage via command line: Rscript --vanilla inputFile outputFile
+# usage via command line: Rscript --vanilla manhattan.R inputFile outputFile
 # inputFile: gwasResultFile
 # outputFile: png of manhattan
 args = commandArgs(trailingOnly=TRUE)
