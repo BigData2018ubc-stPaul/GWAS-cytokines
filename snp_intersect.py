@@ -13,34 +13,40 @@ def get_cytokine_paths(cytokine_dir):
 
 def get_cytokine_snps(cytokine_paths,alpha):
     cytokine_snps = {} 
-    for (name,path) in cytokine_paths: 
+    for (cytokine,path) in cytokine_paths: 
         snps = []
         with open(path,'r') as file:
             for line in file:
                 tokens = line.split()
-                if tokens[8] not in ["NA","P"," ","\t","\n"] and float(tokens[8]) <= alpha:
-                    snps.append(tokens[1])
+                if tokens[8] not in ["NA","P"," ","\t","\n"]:
+                    p_val = float(tokens[8])
+                    name = tokens[1]
+                    if p_val <= alpha:
+                        snps[name] = p_val
         assert(len(snps) > 0)
-        cytokine_snps[name] = snps
+        cytokine_snps[cytokine] = snps
     return cytokine_snps
 
 def get_survival_snps(survival_path,alpha):
-    snps = []
+    snps = {}
     with open(survival_path,'r') as file:
         for line in file:
             tokens = line.split()
-            if tokens[8] not in ["NA","P"," ","\t","\n"] and float(tokens[8]) <= alpha:
-                snps.append(tokens[1])
-    assert(len(snps) > 0)
+            if tokens[8] not in ["NA","P"," ","\t","\n"]:
+                name = tokens[1]
+                p_val = float(tokens[8])
+                if p_val <= alpha:
+                    snps[name] = p_val
     return snps
 
 def intersect_snps(cytokine_snps,survival_snps):
     intersection = {}
     for cytokine in cytokine_snps:
-        snps = []
         for snp in survival_snps:
             if snp in cytokine_snps[cytokine]:
-                snps.append(snp)
+                cytokine_p = cytokine_snps[cytokine][snp]
+                survival_p = survival_snps[snp]
+                snps.append( (snp,cytokine_p,survival_p) )
         intersection[cytokine] = snps
     return intersection
 
@@ -55,7 +61,6 @@ def output_snps(intersected_snps,output):
                 snps = snps + snp + "\t"
             snps.rstrip('\t')
             file.write(cytokine + "\t" + snps + "\n")
-            print(cytokine, snps)
 
 def main(argv):
     help_message = "Finds SNPs which are both correlated with raised levels of particular cytokines, and survival."
