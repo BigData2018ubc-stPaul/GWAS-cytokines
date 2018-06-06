@@ -18,8 +18,9 @@ def get_cytokine_snps(cytokine_paths,alpha):
         with open(path,'r') as file:
             for line in file:
                 tokens = line.split(' ')
-                if tokens[8] != "NA" and tokens[8] != "P" and Float.parseFloat(tokens[8]) <= alpha:
+                if tokens[8] not in ["NA","P"," ","\t"] and float(tokens[8]) <= alpha:
                     snps.append(tokens[1])
+        assert(len(snps) > 0)
         cytokine_snps[name] = snps
     return cytokine_snps
 
@@ -28,8 +29,9 @@ def get_survival_snps(survival_path):
     with open(survival_path,'r') as file:
         for line in file:
             tokens = line.split(' ')
-            if tokens[8] != "NA" and tokens[8] != "P" and Float.parseFloat(tokens[8]) <= alpha:
+            if tokens[8] not in ["NA","P"," ","\t"] and float(tokens[8]) <= alpha:
                 snps.append(token[1])
+    assert(len(snps) > 0)
     return snps
 
 def intersect_snps(cytokine_snps,survival_snps):
