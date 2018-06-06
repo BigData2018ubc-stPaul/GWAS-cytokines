@@ -47,12 +47,13 @@ def intersect_snps(cytokine_snps,survival_snps):
 def output_snps(intersected_snps,output):
     path = output + ".tsv"
     with open(path,'w') as file:
+        file.write("Cytokine \t SNPs")
         for cytokine in intersected_snps:
             snps = ""
             for snp in intersected_snps[cytokine]:
-                snps = snps + "snp,"
-            snps.rstrip(',')
-            file.write(cytokine + "\t" + "snps")
+                snps = snps + snp + "\t"
+            snps.rstrip('\t')
+            file.write(cytokine + "\t" + snps)
 
 def main(argv):
     help_message = "Finds SNPs which are both correlated with raised levels of particular cytokines, and survival."
