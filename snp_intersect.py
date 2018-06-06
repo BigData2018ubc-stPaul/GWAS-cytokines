@@ -24,7 +24,7 @@ def get_cytokine_snps(cytokine_paths,alpha):
         cytokine_snps[name] = snps
     return cytokine_snps
 
-def get_survival_snps(survival_path):
+def get_survival_snps(survival_path,alpha):
     snps = []
     with open(survival_path,'r') as file:
         for line in file:
@@ -109,7 +109,7 @@ def main(argv):
 
     cytokine_paths = get_cytokine_paths(cytokine_dir)
     cytokine_snps = get_cytokine_snps(cytokine_paths,alpha)
-    survival_snps = get_survival_snps(survival_path)
+    survival_snps = get_survival_snps(survival_path,alpha)
     intersected_snps = intersect_snps(cytokine_snps,survival_snps)
     output_snps(intersected_snps,output)
     
