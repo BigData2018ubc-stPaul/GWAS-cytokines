@@ -8,9 +8,9 @@ def call_process(command):
 
 # Creating template files
 if not os.path.exists("template/"):
-    call_process("tar -zxvf template.tar.gz")
-    call_process("plink --bfile template/template --recode --tab --out template/template --noweb")
-    call_process("cut -f 7- template/template.ped >> template/cut_template.ped")
+    call_process(["tar", "-zxvf", "template.tar.gz"])
+    call_process(["plink", "--bfile", "template/template", "--recode", "--tab", "--out", "template/template", "--noweb"])
+    call_process(["cut", "-f", "7-", "template/template.ped", ">>", "template/cut_template.ped"])
 
 cytokines = pd.read_excel("Sepsis_patient_cytokine_levels.xlsx")
 mean_cytokine = cytokines.mean(0)
@@ -36,8 +36,8 @@ for cytokine in mean_cytokine.iteritems():
                header=None, index=None, sep=' ', mode='a')
     call_process(['cp', 'template/template.map', destination])
     call_process(['mv', os.path.join(destination, 'template.map'), os.path.join(destination, cytokine[0]+".map")])
-    call_process("paste -d' ' %s template/cut_template.ped >> %s" % (os.path.join(destination, cytokine[0]+"_temp.ped"), os.path.join(destination, cytokine[0]+".ped")))
-    call_process("plink1 --file %s --make-bed --out %s --noweb" % (os.path.join(destination, cytokine[0]), os.path.join(destination, cytokine[0])))
-    call_process("plink1 --bfile %s --assoc --out %s --noweb" % (os.path.join(destination, cytokine[0]), os.path.join(destination, cytokine[0])))
-    call_process("Rscript --vanilla ../../visualization/manhattan.R%s %s" % (os.path.join(destination, cytokine[0]+".assoc"), os.path.join(destination, cytokine[0]+".png")))
-    call_process("rm %s" % os.path.join(destination, cytokine[0]+".ped"))
+    call_process(["paste", "-d' '", "%s", "template/cut_template.ped", ">>", "%s"] % (os.path.join(destination, cytokine[0]+"_temp.ped"), os.path.join(destination, cytokine[0]+".ped")))
+    call_process(["plink", "--file", "%s", "--make-bed", "--out", "%s", "--noweb"] % (os.path.join(destination, cytokine[0]), os.path.join(destination, cytokine[0])))
+    call_process(["plink", "--bfile", "%s", "--assoc", "--out", "%s", "--noweb"] % (os.path.join(destination, cytokine[0]), os.path.join(destination, cytokine[0])))
+    call_process(["Rscript", "--vanilla", "../../visualization/manhattan.R", "%s", "%s"] % (os.path.join(destination, cytokine[0]+".assoc"), os.path.join(destination, cytokine[0]+".png")))
+    call_process(["rm", "%s"] % os.path.join(destination, cytokine[0]+".ped"))
