@@ -14,7 +14,7 @@ def get_cytokine_paths(cytokine_dir):
 def get_cytokine_snps(cytokine_paths,alpha):
     cytokine_snps = {} 
     for (cytokine,path) in cytokine_paths: 
-        snps = []
+        snps = {}
         with open(path,'r') as file:
             for line in file:
                 tokens = line.split()
@@ -41,6 +41,7 @@ def get_survival_snps(survival_path,alpha):
 
 def intersect_snps(cytokine_snps,survival_snps):
     intersection = {}
+    snps = []
     for cytokine in cytokine_snps:
         for snp in survival_snps:
             if snp in cytokine_snps[cytokine]:
@@ -54,11 +55,11 @@ def output_snps(intersected_snps,output):
     path = output + ".tsv"
     with open(path,'a') as file:
         if sum(1 for line in open(output+ ".tsv")) < 1:
-            file.write("Cytokine \t SNPs\n")
+            file.write("Cytokine \t(SNPs, cytokine p-value, survival p-value)\n")
         for cytokine in intersected_snps:
             snps = ""
             for snp in intersected_snps[cytokine]:
-                snps = snps + snp + "\t"
+                snps = snps + str(snp) + "\t"
             snps.rstrip('\t')
             file.write(cytokine + "\t" + snps + "\n")
 
